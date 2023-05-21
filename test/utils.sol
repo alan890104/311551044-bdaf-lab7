@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Library for handling decimals and formatting
 library DecimalUtils {
+    // Returns a string representation of `val` formatted with commas for readability
+    // and a decimal point inserted `decimals` places from the right.
+    // For example, numberWithCommas(255576801746570, 6) returns "255,576,801.746570".
     function numberWithCommas(uint256 val, uint8 decimals) internal pure returns (string memory) {
         if (val == 0) {
             return "0";
@@ -28,6 +32,7 @@ library DecimalUtils {
         return string(abi.encodePacked(addCommas(beforeDecimalStr), ".", afterDecimalStr));
     }
 
+    // Converts a uint256 to a string
     function toString(uint256 val) internal pure returns (string memory) {
         if (val == 0) {
             return "0";
@@ -47,6 +52,8 @@ library DecimalUtils {
         return string(buffer);
     }
 
+    // Inserts commas into a string representing a decimal number
+    // For example, addCommas("1234567") returns "1,234,567".
     function addCommas(string memory val) internal pure returns (string memory) {
         bytes memory valBytes = bytes(val);
         uint256 length = valBytes.length;
