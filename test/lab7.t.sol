@@ -14,6 +14,9 @@ interface ICompoundUSDC {
 contract TestCompoundUSDC is Test {
     using DecimalUtils for uint256;
 
+    // error
+    error BorrowTooSmall();
+
     // test setup
     string public rpc = vm.envString("MAINNET_RPC_URL");
 
@@ -71,8 +74,9 @@ contract TestCompoundUSDC is Test {
         // Check compound balance (may close to 0)
         _getCompoundUSDC("After Bob withdraws all the usdc balance");
 
-        // Alice try to withdraw 1000USDC
+        // Alice try to withdraw 1000USDC, but get BorrowTooSmall error
         changePrank(alice);
+        vm.expectRevert(BorrowTooSmall.selector);
         compound.withdraw(address(usdc), 1000 * 10 ** 6);
     }
 }
