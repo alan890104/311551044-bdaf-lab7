@@ -70,7 +70,7 @@
     ```solidity
     changePrank(alice);
     uint256 remain = compound.balanceOf(address(alice));
-    vm.expectRevert(BorrowTooSmall.selector);
+    vm.expectRevert(bytes("ERC20: transfer amount exceeds balance"));
     compound.withdraw(address(usdc), remain);
     ```
 
