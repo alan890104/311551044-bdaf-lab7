@@ -65,12 +65,13 @@
 
     ![alt text](/image/lab7-step3.png)
 
-7. Alice try to withdraw `1000 USDC` from Compound, but she will get `BorrowTooSmall` error
+7. Alice try to withdraw `1000 USDC` from Compound, but she will get `ERC20: transfer amount exceeds balance` error
 
     ```solidity
     changePrank(alice);
+    uint256 remain = compound.balanceOf(address(alice));
     vm.expectRevert(BorrowTooSmall.selector);
-    compound.withdraw(address(usdc), 1000 * 10 ** 6);
+    compound.withdraw(address(usdc), remain);
     ```
 
     ![alt text](/image/lab7-step4.png)

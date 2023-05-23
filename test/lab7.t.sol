@@ -14,9 +14,6 @@ interface ICompoundUSDC {
 contract TestCompoundUSDC is Test {
     using DecimalUtils for uint256;
 
-    // error
-    error BorrowTooSmall();
-
     // test setup
     string public rpc = vm.envString("MAINNET_RPC_URL");
 
@@ -74,9 +71,10 @@ contract TestCompoundUSDC is Test {
         // Check compound balance (may close to 0)
         _getCompoundUSDC("After Bob withdraws all the usdc balance");
 
-        // Alice try to withdraw 1000USDC, but get BorrowTooSmall error
+        // Alice try to withdraw 1000USDC, but get `ERC20: transfer amount exceeds balance`
         changePrank(alice);
-        vm.expectRevert(BorrowTooSmall.selector);
-        compound.withdraw(address(usdc), 1000 * 10 ** 6);
+        uint256 remain = compound.balanceOf(address(alice));
+        vm.expectRevert(bytes("ERC20: transfer amount exceeds balance"));
+        compound.withdraw(address(usdc), remain);
     }
 }
